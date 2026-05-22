@@ -1,0 +1,1 @@
+so to test the real power of what we have built and configured, we need to build a small application and then push it to the repo so that we can see jenkins do the job and use nexus and sonarqube to do their work . 
