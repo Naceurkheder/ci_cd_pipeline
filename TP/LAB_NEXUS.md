@@ -1,9 +1,9 @@
-###Le Besoin:
+#Le Besoin:
 
 - Nexus Repository Manager est un outil de gestion de référentiels qui permet de stocker et de distribuer des artefacts logiciels tels que des bibliothèques, des dépendances et des packages. Il est utilisé pour faciliter la gestion des dépendances dans les projets de développement logiciel, en fournissant un emplacement centralisé pour stocker et partager les artefacts.
 - Nexus Repository Manager prend en charge plusieurs formats de référentiels, tels que Maven, npm, Docker, et bien d'autres. Il permet aux équipes de développement de publier, de partager et de gérer les artefacts de manière efficace, tout en assurant la sécurité et la traçabilité des artefacts. En utilisant Nexus Repository Manager, les équipes peuvent améliorer la collaboration, réduire les temps de construction et garantir la cohérence des dépendances dans leurs projets logiciels.
 
-###Les Concepts:
+#Les Concepts:
 
 - **Repository**: Un référentiel est un emplacement de stockage pour les artefacts logiciels.
 - **Type de Repository**: Il existe différents 3 types de repositories dans Nexus Repository Manager:
@@ -14,7 +14,7 @@
 - **Artifact**: Un artefact est un fichier binaire ou un package qui est stocké dans un référentiel. Il peut s'agir de bibliothèques.
 - **Component**: Un composant est une unité de travail dans Nexus Repository Manager. Il peut être un artefact ou un ensemble d'artefacts liés.
   
-###Installation de Nexus:
+#Installation de Nexus:
 
 - Télécharger Nexus Repository Manager https://help.sonatype.com/en/download.html
 - Décompresser le fichier téléchargé et exécuter le script `nexus`.
