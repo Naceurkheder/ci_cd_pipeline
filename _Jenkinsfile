@@ -4,7 +4,7 @@ pipeline {
     environment {
         NEXUS_URL          = 'http://192.168.56.31:8081'
         NEXUS_NPM_REGISTRY = 'http://192.168.56.31:8081/repository/npm-proxy/'
-        NEXUS_MAVEN_REPO   = 'http://192.168.56.31:8081/repository/maven-public/'  // ← was maven-proxy
+        NEXUS_MAVEN_REPO   = 'http://192.168.56.31:8081/repository/maven-public/'
         SONAR_HOST_URL     = 'https://cathouse-doing-extended.ngrok-free.dev'
     }
 
@@ -38,7 +38,6 @@ pipeline {
                                 usernameVariable: 'NEXUS_USER',
                                 passwordVariable: 'NEXUS_PASS'
                             )]) {
-                                echo 'Writing clean settings.xml with Nexus credentials...'
                                 writeFile file: 'settings.xml', text: """<?xml version="1.0" encoding="UTF-8"?>
 <settings xmlns="http://maven.apache.org/SETTINGS/1.2.0"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -132,18 +131,11 @@ pipeline {
                                     npm config set registry ${NEXUS_NPM_REGISTRY}
                                     npm config set //192.168.56.31:8081/repository/npm-proxy/:username ${NEXUS_USER}
                                     npm config set //192.168.56.31:8081/repository/npm-proxy/:_password \$(echo -n '${NEXUS_PASS}' | base64)
-                                    npm config set //192.168.56.31:8081/repository/npm-proxy/:always-auth true
                                     npm config set //192.168.56.31:8081/repository/npm-proxy/:email ci@ci.local
                                 """
 
                                 echo 'Installing dependencies from Nexus...'
-                                sh """
-                                    npm install \
-                                        --prefer-offline \
-                                        --no-audit \
-                                        --no-fund \
-                                        --loglevel warn
-                                """
+                                sh 'npm install --prefer-offline --no-audit --no-fund --loglevel warn'
 
                                 echo 'Building Angular app...'
                                 sh 'npm run build'
