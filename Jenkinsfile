@@ -12,9 +12,6 @@ pipeline {
         stage('Concurrent Build, Analyze & Deploy') {
             parallel {
                 
-                // ==========================================
-                // TRACK 1: SPRING BOOT (Java 21)
-                // ==========================================
                 stage('Spring Boot Backend') {
                     agent {
                         docker { 
@@ -55,9 +52,6 @@ pipeline {
                     }
                 }
                 
-                // ==========================================
-                // TRACK 2: ANGULAR FRONTEND (Node 22)
-                // ==========================================
                 stage('Angular Frontend') {
                     agent {
                         docker { 
