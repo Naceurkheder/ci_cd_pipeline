@@ -12,9 +12,7 @@ pipeline {
         stage('Concurrent Build, Analyze & Deploy') {
             parallel {
                 
-                // ==========================================
-                // TRACK 1: SPRING BOOT (Java 21)
-                // ==========================================
+               
                 stage('Spring Boot Backend') {
                     agent {
                         docker { 
@@ -28,14 +26,14 @@ pipeline {
                             
                             // Safe native file creation to prevent formatting corruption
                             writeFile file: 'settings.xml', text: '''<settings>
-  <mirrors>
-    <mirror>
-      <id>nexus</id>
-      <mirrorOf>*</mirrorOf>
-      <url>http://192.168.56.31:8081/repository/maven-public/</url>
-    </mirror>
-  </mirrors>
-</settings>'''
+                              <mirrors>
+                                <mirror>
+                                  <id>nexus</id>
+                                  <mirrorOf>*</mirrorOf>
+                                  <url>http://192.168.56.31:8081/repository/maven-public/</url>
+                                </mirror>
+                              </mirrors>
+                            </settings>'''
                             
                             echo 'Compiling Java, running tests, and pushing to SonarQube...'
                             withSonarQubeEnv(installationName: 'sonar-server') {
@@ -64,10 +62,7 @@ pipeline {
                         }
                     }
                 }
-                
-                // ==========================================
-                // TRACK 2: ANGULAR FRONTEND (Node 22)
-                // ==========================================
+
                 stage('Angular Frontend') {
                     agent {
                         docker { 
