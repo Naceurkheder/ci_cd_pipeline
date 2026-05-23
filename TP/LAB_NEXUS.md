@@ -25,7 +25,7 @@ bash '''
     xms1024m -> xms512m (512m de RAM pour Nexus)
 '''
 # Creation d'un Repo : 
-- Pour le test :
+Pour le test :
 - J’ai créé un dépôt brut tp_lab sur Nexus , puis j’ai mis en place un dépôt sur Gitea. Ensuite, j’ai testé le processus de build avec Jenkins sur un projet Python, en utilisant le fichier requirements.txt pour gérer les dépendances.
 
 # Creation Credentials dans Jenkins :
