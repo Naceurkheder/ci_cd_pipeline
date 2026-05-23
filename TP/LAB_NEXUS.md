@@ -106,5 +106,3 @@ pipeline {
 # Sources Utilies:
 - https://dev.to/jkosla/a-complete-guide-to-setting-up-nexus-2-ways-how-to-connect-nexus-to-jenkins-34c9
 - https://medium.com/@Raghvendra_Tyagi/all-about-nexus-and-how-to-setup-nexus-sonatype-repository-e67548bf8356
-- https://stackoverflow.com/questions/61105368/how-to-use-github-personal-access-token-in-jenkins
-- https://medium.com/@developerwakeling/setting-up-github-webhooks-jenkins-and-ngrok-for-local-development-f4b2c1ab5b6
