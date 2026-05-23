@@ -19,10 +19,6 @@ pipeline {
 
         stage('Concurrent Build, Analyze & Deploy') {
             parallel {
-
-                // ─────────────────────────────────────────
-                // SPRING BOOT BACKEND
-                // ─────────────────────────────────────────
                 stage('Spring Boot Backend') {
                     agent {
                         docker {
@@ -39,54 +35,54 @@ pipeline {
                                 passwordVariable: 'NEXUS_PASS'
                             )]) {
                                 writeFile file: 'settings.xml', text: """<?xml version="1.0" encoding="UTF-8"?>
-<settings xmlns="http://maven.apache.org/SETTINGS/1.2.0"
-          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.2.0
-                              https://maven.apache.org/xsd/settings-1.2.0.xsd">
-
-  <servers>
-    <server>
-      <id>nexus</id>
-      <username>${NEXUS_USER}</username>
-      <password>${NEXUS_PASS}</password>
-    </server>
-  </servers>
-
-  <mirrors>
-    <mirror>
-      <id>nexus</id>
-      <mirrorOf>*</mirrorOf>
-      <url>${NEXUS_MAVEN_REPO}</url>
-    </mirror>
-  </mirrors>
-
-  <profiles>
-    <profile>
-      <id>nexus</id>
-      <repositories>
-        <repository>
-          <id>central</id>
-          <url>${NEXUS_MAVEN_REPO}</url>
-          <releases><enabled>true</enabled></releases>
-          <snapshots><enabled>true</enabled></snapshots>
-        </repository>
-      </repositories>
-      <pluginRepositories>
-        <pluginRepository>
-          <id>central</id>
-          <url>${NEXUS_MAVEN_REPO}</url>
-          <releases><enabled>true</enabled></releases>
-          <snapshots><enabled>true</enabled></snapshots>
-        </pluginRepository>
-      </pluginRepositories>
-    </profile>
-  </profiles>
-
-  <activeProfiles>
-    <activeProfile>nexus</activeProfile>
-  </activeProfiles>
-
-</settings>"""
+                                        <settings xmlns="http://maven.apache.org/SETTINGS/1.2.0"
+                                                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                                  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.2.0
+                                                                      https://maven.apache.org/xsd/settings-1.2.0.xsd">
+                                        
+                                          <servers>
+                                            <server>
+                                              <id>nexus</id>
+                                              <username>${NEXUS_USER}</username>
+                                              <password>${NEXUS_PASS}</password>
+                                            </server>
+                                          </servers>
+                                        
+                                          <mirrors>
+                                            <mirror>
+                                              <id>nexus</id>
+                                              <mirrorOf>*</mirrorOf>
+                                              <url>${NEXUS_MAVEN_REPO}</url>
+                                            </mirror>
+                                          </mirrors>
+                                        
+                                          <profiles>
+                                            <profile>
+                                              <id>nexus</id>
+                                              <repositories>
+                                                <repository>
+                                                  <id>central</id>
+                                                  <url>${NEXUS_MAVEN_REPO}</url>
+                                                  <releases><enabled>true</enabled></releases>
+                                                  <snapshots><enabled>true</enabled></snapshots>
+                                                </repository>
+                                              </repositories>
+                                              <pluginRepositories>
+                                                <pluginRepository>
+                                                  <id>central</id>
+                                                  <url>${NEXUS_MAVEN_REPO}</url>
+                                                  <releases><enabled>true</enabled></releases>
+                                                  <snapshots><enabled>true</enabled></snapshots>
+                                                </pluginRepository>
+                                              </pluginRepositories>
+                                            </profile>
+                                          </profiles>
+                                        
+                                          <activeProfiles>
+                                            <activeProfile>nexus</activeProfile>
+                                          </activeProfiles>
+                                        
+                                        </settings>"""
 
                                 withSonarQubeEnv('sonar-server') {
                                     sh """
@@ -108,9 +104,6 @@ pipeline {
                     }
                 }
 
-                // ─────────────────────────────────────────
-                // ANGULAR FRONTEND
-                // ─────────────────────────────────────────
                 stage('Angular Frontend') {
                     agent {
                         docker {
