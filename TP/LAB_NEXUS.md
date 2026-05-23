@@ -24,6 +24,16 @@ bash '''
     xmx1024m -> xmx512m (512m de RAM pour Nexus)
     xms1024m -> xms512m (512m de RAM pour Nexus)
 '''
+# Creation d'un Repo : 
+- Pour le test :
+- J’ai créé un dépôt brut tp_lab sur Nexus , puis j’ai mis en place un dépôt sur Gitea. Ensuite, j’ai testé le processus de build avec Jenkins sur un projet Python, en utilisant le fichier requirements.txt pour gérer les dépendances.
+
+# Creation Credentials dans Jenkins :
+- Dans Jenkins, j’ai commencé par créer des identifiants sécurisés (credentials) afin de permettre l’authentification entre les différents services. Pour cela, j’ai ajouté un nom d’utilisateur et un mot de passe dans la section Manage Jenkins > Credentials, puis j’ai associé ces informations au pipeline afin que Jenkins puisse accéder au dépôt hébergé sur Gitea et au dépôt brut sur Sonatype Nexus Repository.
+
+- Ensuite, j’ai configuré et testé le processus de build complet sur un projet Python utilisant le fichier requirements.txt pour la gestion des dépendances. Après plusieurs vérifications, j’ai mis en place un système d’intégration continue permettant de déclencher automatiquement un événement de build à chaque push effectué sur le dépôt Git.
+
+- Ainsi, dès qu’une modification est envoyée vers le repository, Jenkins détecte le changement, récupère automatiquement le code source, installe les dépendances nécessaires et lance le pipeline de build sans intervention manuelle. Cette configuration m’a permis de mieux comprendre le fonctionnement de l’automatisation CI/CD et l’interaction entre les différents outils DevOps.
 
 # Sources Utilies:
 - https://dev.to/jkosla/a-complete-guide-to-setting-up-nexus-2-ways-how-to-connect-nexus-to-jenkins-34c9
