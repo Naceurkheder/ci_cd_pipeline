@@ -25,7 +25,7 @@ bash '''
     xms1024m -> xms512m (512m de RAM pour Nexus)
 '''
 
-###Sources Utilies:
+# Sources Utilies:
 - https://dev.to/jkosla/a-complete-guide-to-setting-up-nexus-2-ways-how-to-connect-nexus-to-jenkins-34c9
 - https://medium.com/@Raghvendra_Tyagi/all-about-nexus-and-how-to-setup-nexus-sonatype-repository-e67548bf8356
 - stackoverflow.com/questions/61105368/how-to-use-github-personal-access-token-in-jenkins
