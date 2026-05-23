@@ -1,4 +1,16 @@
-stage('Test & Analyze') {
+pipeline {
+    agent any 
+    
+    stages {
+        stage('Checkout Code') {
+            steps {
+                echo 'Pulling monorepo code from GitHub...'
+                checkout scm
+            }
+        }
+        
+        stage('Test & Analyze') {
+            // Notice: NO 'steps' block here, just parallel immediately
             parallel {
                 
                 stage('Spring Boot (Java 21) & SonarQube') {
@@ -11,11 +23,10 @@ stage('Test & Analyze') {
                     steps {
                         dir('back_end/demo') {
                             echo 'Running Java tests and Verbose SonarQube analysis...'
-                            withSonarQubeEnv('sonar-server') {
-                                // -X adds verbose logging to Maven itself
+                            
+                            // Explicitly using installationName to prevent argument errors
+                            withSonarQubeEnv(installationName: 'sonar-server') {
                                 sh 'mvn clean test -Dmaven.test.failure.ignore=true -X' 
-                                
-                                // Added verbose flag AND the Quality Gate wait flag
                                 sh 'mvn sonar:sonar -Dsonar.verbose=true -Dsonar.qualitygate.wait=true' 
                             }
                         }
@@ -32,12 +43,10 @@ stage('Test & Analyze') {
                     steps {
                         dir('demo_frontend') {
                             echo 'Running Angular tests & Verbose Sonar Scan...'
-                            // Added --loglevel verbose for npm
                             sh 'npm install --loglevel verbose'
                             sh 'npm run test -- --watch=false' 
                             
-                            withSonarQubeEnv('sonar-server') {
-                                // Added -X for verbose scanner output and the Quality Gate wait flag
+                            withSonarQubeEnv(installationName: 'sonar-server') {
                                 sh '''
                                 npx sonarqube-scanner \
                                   -X \
@@ -53,3 +62,5 @@ stage('Test & Analyze') {
                 
             }
         }
+    }
+}
