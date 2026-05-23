@@ -28,7 +28,7 @@ pipeline {
                         docker {
                             image 'maven:3.9-eclipse-temurin-21'
                             reuseNode true
-                            args '-v sonar-cache:/root/.sonar/cache -u root:root'
+                            args '-v sonar-cache:/root/.sonar/cache -v maven-cache:/root/.m2 -u root:root'
                         }
                     }
                     steps {
@@ -77,7 +77,6 @@ pipeline {
 
 </settings>"""
 
-                            echo 'Compiling Java and running tests via Nexus...'
                             withSonarQubeEnv('sonar-server') {
                                 sh """
                                     mvn clean package \
@@ -105,7 +104,7 @@ pipeline {
                         docker {
                             image 'node:22'
                             reuseNode true
-                            args '-v sonar-cache:/root/.sonar/cache -u root:root'
+                            args '-v sonar-cache:/root/.sonar/cache -v npm-cache:/root/.npm -u root:root'
                         }
                     }
                     steps {
@@ -115,7 +114,13 @@ pipeline {
                             sh "npm config set registry ${NEXUS_NPM_REGISTRY}"
 
                             echo 'Installing dependencies from Nexus...'
-                            sh 'npm install --no-audit --no-fund --loglevel verbose'
+                            sh """
+                                npm install \
+                                    --prefer-offline \
+                                    --no-audit \
+                                    --no-fund \
+                                    --loglevel warn
+                            """
 
                             echo 'Building Angular app...'
                             sh 'npm run build'
