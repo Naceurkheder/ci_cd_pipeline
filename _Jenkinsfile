@@ -23,8 +23,9 @@ pipeline {
                         dir('back_end/demo') {
                             echo 'Configuring Maven cleanly via Jenkins native step...'
                             
-                            // Nexus caching for Maven
-                            writeFile file: 'settings.xml', text: '''<settings>
+                            sh '''
+                            cat <<EOF > settings.xml
+                            <settings>
                               <mirrors>
                                 <mirror>
                                   <id>nexus</id>
@@ -32,7 +33,9 @@ pipeline {
                                   <url>http://192.168.56.31:8081/repository/maven-public/</url>
                                 </mirror>
                               </mirrors>
-                            </settings>'''
+                            </settings>
+                            EOF
+                            '''
                             
                             echo 'Compiling Java, running tests, and pushing to SonarQube...'
                             withSonarQubeEnv(installationName: 'sonar-server') {
