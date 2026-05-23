@@ -34,13 +34,11 @@ pipeline {
                                 usernameVariable: 'NEXUS_USER',
                                 passwordVariable: 'NEXUS_PASS'
                             )]) {
-                                writeFile file: 'settings.xml', text: """
-                                <?xml version="1.0" encoding="UTF-8"?>
+                                writeFile file: 'settings.xml', text: """<?xml version="1.0" encoding="UTF-8"?>
                                 <settings xmlns="http://maven.apache.org/SETTINGS/1.2.0"
                                           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                                           xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.2.0
                                                               https://maven.apache.org/xsd/settings-1.2.0.xsd">
-                                
                                   <servers>
                                     <server>
                                       <id>nexus</id>
@@ -48,7 +46,6 @@ pipeline {
                                       <password>${NEXUS_PASS}</password>
                                     </server>
                                   </servers>
-                                
                                   <mirrors>
                                     <mirror>
                                       <id>nexus</id>
@@ -56,7 +53,6 @@ pipeline {
                                       <url>${NEXUS_MAVEN_REPO}</url>
                                     </mirror>
                                   </mirrors>
-                                
                                   <profiles>
                                     <profile>
                                       <id>nexus</id>
@@ -78,12 +74,10 @@ pipeline {
                                       </pluginRepositories>
                                     </profile>
                                   </profiles>
-                                
                                   <activeProfiles>
                                     <activeProfile>nexus</activeProfile>
                                   </activeProfiles>
-                                
-                                </settings>"""
+                                </settings>""".stripIndent()
 
                                 withSonarQubeEnv('sonar-server') {
                                     sh """
