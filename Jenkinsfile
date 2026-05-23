@@ -60,11 +60,9 @@ pipeline {
                     steps {
                         dir('demo_frontend') {
                             echo 'Building Angular, running tests, and pushing to SonarQube...'
-                            
                             sh 'npm install --loglevel verbose'
                             sh 'npm run build'
                             sh 'npm run test -- --watch=false' 
-                            
                             withSonarQubeEnv(installationName: 'sonar-server') {
                                 sh '''
                                 npx sonarqube-scanner \
@@ -84,7 +82,6 @@ pipeline {
                             nexusArtifactUploader(
                                 nexusVersion: 'nexus3',
                                 protocol: 'http',
-
                                 nexusUrl: '192.168.56.31:8081', 
                                 groupId: 'com.demo',
                                 version: '1.0.0',
