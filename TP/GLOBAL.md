@@ -1,4 +1,6 @@
 <img width="914" height="438" alt="WhatsApp Image 2026-05-23 at 01 12 46" src="https://github.com/user-attachments/assets/3b9e7634-1c5e-4973-8b2b-5ddc247eb216" />
+
+
 C'est le schéma complet du pipeline que le prof a conçu. Il résout un problème précis : Jenkins est dans un réseau privé (VMs locales), mais GitHub est sur internet public — comment faire communiquer les deux ?
 
 Le problème central — "The Challenge"
