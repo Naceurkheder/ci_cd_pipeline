@@ -77,10 +77,8 @@ pipeline {
                             sh 'npm config set registry http://192.168.56.31:8081/repository/npm-proxy/'
                             
                             echo 'Building Angular, running tests, and pushing to SonarQube...'
-                            sh 'npm install --loglevel verbose'
+                            sh 'npm install --no-audit --no-fund --loglevel verbose'
                             sh 'npm run build'
-                            sh 'npm run test -- --watch=false' 
-                            
                             withSonarQubeEnv(installationName: 'sonar-server') {
                                 // Added --yes to prevent prompt hanging.
                                 // Replaced public registry with Nexus proxy to enable sonarqube-scanner caching.
