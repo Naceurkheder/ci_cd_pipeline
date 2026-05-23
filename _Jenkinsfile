@@ -12,7 +12,6 @@ pipeline {
         stage('Concurrent Build, Analyze & Deploy') {
             parallel {
                 
-               
                 stage('Spring Boot Backend') {
                     agent {
                         docker { 
@@ -24,7 +23,7 @@ pipeline {
                         dir('back_end/demo') {
                             echo 'Configuring Maven cleanly via Jenkins native step...'
                             
-                            // Safe native file creation to prevent formatting corruption
+                            // Nexus caching for Maven
                             writeFile file: 'settings.xml', text: '''<settings>
                               <mirrors>
                                 <mirror>
@@ -73,6 +72,8 @@ pipeline {
                     steps {
                         dir('demo_frontend') {
                             echo 'Setting npm registry to Nexus Proxy...'
+                            
+                            // Nexus caching for standard npm packages
                             sh 'npm config set registry http://192.168.56.31:8081/repository/npm-proxy/'
                             
                             echo 'Building Angular, running tests, and pushing to SonarQube...'
@@ -81,9 +82,10 @@ pipeline {
                             sh 'npm run test -- --watch=false' 
                             
                             withSonarQubeEnv(installationName: 'sonar-server') {
-                                // Added explicit public fallback for npx in case your Nexus proxy configuration has remote connectivity blocks
+                                // Added --yes to prevent prompt hanging.
+                                // Replaced public registry with Nexus proxy to enable sonarqube-scanner caching.
                                 sh '''
-                                npx --registry=https://registry.npmjs.org/ sonarqube-scanner \
+                                npx --yes --registry=http://192.168.56.31:8081/repository/npm-proxy/ sonarqube-scanner \
                                   -X \
                                   -Dsonar.projectKey=demo-frontend \
                                   -Dsonar.sources=src \
