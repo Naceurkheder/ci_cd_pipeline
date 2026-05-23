@@ -36,7 +36,7 @@ pipeline {
                 stage('Angular Frontend Testing') {
                     agent {
                         docker { 
-                            image 'node:18' 
+                            image 'node:22' 
                             args '-u root:root'
                         }
                     }
