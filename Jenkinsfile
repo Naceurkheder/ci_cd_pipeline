@@ -11,10 +11,6 @@ pipeline {
         
         stage('Concurrent Build, Analyze & Deploy') {
             parallel {
-                
-                // ==========================================
-                // TRACK 1: SPRING BOOT (Java 21)
-                // ==========================================
                 stage('Spring Boot Backend') {
                     agent {
                         docker { 
@@ -55,9 +51,6 @@ pipeline {
                     }
                 }
                 
-                // ==========================================
-                // TRACK 2: ANGULAR FRONTEND (Node 22)
-                // ==========================================
                 stage('Angular Frontend') {
                     agent {
                         docker { 
@@ -92,7 +85,7 @@ pipeline {
                             nexusArtifactUploader(
                                 nexusVersion: 'nexus3',
                                 protocol: 'http',
-                                // **IMPORTANT: Ensure this is your actual Nexus VM IP**
+
                                 nexusUrl: '192.168.56.31:8081', 
                                 groupId: 'com.demo',
                                 version: '1.0.0',
