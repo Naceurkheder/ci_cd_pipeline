@@ -35,6 +35,74 @@ Pour le test :
 
 - Ainsi, dès qu’une modification est envoyée vers le repository, Jenkins détecte le changement, récupère automatiquement le code source, installe les dépendances nécessaires et lance le pipeline de build sans intervention manuelle. Cette configuration m’a permis de mieux comprendre le fonctionnement de l’automatisation CI/CD et l’interaction entre les différents outils DevOps.
 
+# Dans Jenkinsfile : 
+```groovy
+pipeline {
+    agent any
+
+    environment {
+        NEXUS_URL         = '192.168.56.31:8081'
+        NEXUS_CREDENTIALS = 'nexus_credentials'
+        NEXUS_REPO        = 'tp_lab'
+        GROUP_ID          = 'com.python.app'
+        ARTIFACT_ID       = 'requirements_artifact_id'
+    }
+
+    stages {
+        stage('Initialize & Verify') {
+            steps {
+                echo "Running pipeline on branch: ${env.BRANCH_NAME}"
+                echo "Verifying workspace files..."
+                
+                script {
+                    if (!fileExists('requirements.txt')) {
+                        error "Aborting build: requirements.txt was not found in the workspace root."
+                    }
+                }
+            }
+        }
+
+        stage('Upload Artifacts to Nexus') {
+            steps {
+                script {
+                    def appVersion = "1.0.${env.BUILD_NUMBER}"
+                    echo "Deploying version ${appVersion} to Nexus Repository Manager..."
+
+                    nexusArtifactUploader(
+                        nexusVersion: 'nexus3',
+                        protocol: 'http',
+                        nexusUrl: "${env.NEXUS_URL}",
+                        credentialsId: "${env.NEXUS_CREDENTIALS}",
+                        repository: "${env.NEXUS_REPO}",
+                        groupId: "${env.GROUP_ID}",
+                        version: appVersion,
+                        artifacts: [
+                            [
+                                artifactId: "${env.ARTIFACT_ID}",
+                                file: 'requirements.txt',
+                                type: 'txt',
+                                classifier: ''
+                            ]
+                        ]
+                    )
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Pipeline completed successfully. Artifact version 1.0.${env.BUILD_NUMBER} pushed."
+        }
+        failure {
+            echo "Pipeline failed. Please inspect console logs above for errors."
+        }
+        always {
+            cleanWs() 
+        }
+    }
+}
+```
 # Sources Utilies:
 - https://dev.to/jkosla/a-complete-guide-to-setting-up-nexus-2-ways-how-to-connect-nexus-to-jenkins-34c9
 - https://medium.com/@Raghvendra_Tyagi/all-about-nexus-and-how-to-setup-nexus-sonatype-repository-e67548bf8356
